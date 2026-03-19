@@ -3,7 +3,7 @@
 // ============================================================
 
 export const meta = {
-  name: "nyxar77",
+  name: "nyxar_77",
   title: "Software Developer",
   tagline: "Building things that live in terminals and text editors.",
   bio: "I'm a developer who loves NixOS, Neovim, and clean config files. I spend most of my time tinkering with system configs, scripting automation, and occasionally shipping actual products.",
