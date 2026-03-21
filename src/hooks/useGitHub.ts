@@ -1,4 +1,4 @@
-import { BEARER_TOKEN } from "@/env";
+// import { BEARER_TOKEN } from "@/env";
 import { useState, useEffect } from "react";
 
 export interface LangSegment {
@@ -99,7 +99,7 @@ async function fetchPinnedRepos(USERNAME: string): Promise<GitHubRepo[]> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${BEARER_TOKEN || process.env.BEARER_TOKEN}`,
+      Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
     },
     body: JSON.stringify({ query }),
   });
