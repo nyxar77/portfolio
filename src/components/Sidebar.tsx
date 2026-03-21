@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { navItems, meta } from "../data/portfolio";
-import type { Section } from "../data/portfolio";
-import type { Theme } from "../hooks/useTheme";
+import { navItems, meta } from "@/data/portfolio";
+import type { Section } from "@/data/portfolio";
+import type { Theme } from "@/hooks/useTheme";
 
 interface SidebarProps {
   active: Section;
@@ -47,9 +47,7 @@ export function Sidebar({
         zIndex: 50,
       }}
     >
-      {/* TOP: avatar + nav */}
       <div>
-        {/* Avatar row */}
         <div
           style={{
             display: "flex",
@@ -88,7 +86,6 @@ export function Sidebar({
           </span>
         </div>
 
-        {/* Nav items */}
         <nav
           style={{
             display: "flex",
@@ -178,7 +175,6 @@ export function Sidebar({
         </nav>
       </div>
 
-      {/* BOTTOM: theme toggle + github */}
       <div
         style={{
           display: "flex",

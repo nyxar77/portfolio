@@ -1,10 +1,19 @@
+import { BEARER_TOKEN } from "@/env";
 import { useState, useEffect } from "react";
+
+export interface LangSegment {
+  name: string;
+  pct: number;
+  color: string;
+}
 
 export interface GitHubRepo {
   name: string;
   description: string | null;
   url: string;
   language: string | null;
+  languageColor: string;
+  languageBreakdown: LangSegment[];
   stargazerCount: number;
   forkCount: number;
   topics: string[];
@@ -46,10 +55,23 @@ export function getLanguageColor(lang: string | null): string {
   return LANGUAGE_COLORS[lang] ?? "#9399b2";
 }
 
-const USERNAME = "nyxar77";
+function computeBreakdown(
+  edges: { size: number; node: { name: string } }[],
+): LangSegment[] {
+  if (!edges || edges.length === 0) return [];
+  const total = edges.reduce((sum, e) => sum + e.size, 0);
+  if (total === 0) return [];
+  return edges
+    .sort((a, b) => b.size - a.size)
+    .map((e) => ({
+      name: e.node.name,
+      pct: Math.round((e.size / total) * 100),
+      color: getLanguageColor(e.node.name),
+    }))
+    .filter((s) => s.pct > 0);
+}
 
-// GitHub GraphQL — fetches pinned repos (no token needed for public data)
-async function fetchPinnedRepos(): Promise<GitHubRepo[]> {
+async function fetchPinnedRepos(USERNAME: string): Promise<GitHubRepo[]> {
   const query = `{
     user(login: "${USERNAME}") {
       pinnedItems(first: 6, types: REPOSITORY) {
@@ -61,6 +83,9 @@ async function fetchPinnedRepos(): Promise<GitHubRepo[]> {
             stargazerCount
             forkCount
             primaryLanguage { name }
+            languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+              edges { size node { name } }
+            }
             repositoryTopics(first: 5) { nodes { topic { name } } }
             updatedAt
             isArchived
@@ -72,34 +97,39 @@ async function fetchPinnedRepos(): Promise<GitHubRepo[]> {
 
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${BEARER_TOKEN}`,
+    },
     body: JSON.stringify({ query }),
   });
 
-  // GraphQL endpoint requires auth — fall back gracefully
   if (!res.ok) return [];
-
   const json = await res.json();
+  if (json.errors) return [];
   const nodes = json?.data?.user?.pinnedItems?.nodes ?? [];
 
-  return nodes.map(
-    (r: any): GitHubRepo => ({
+  return nodes.map((r: any): GitHubRepo => {
+    const lang = r.primaryLanguage?.name ?? null;
+    const edges = r.languages?.edges ?? [];
+    return {
       name: r.name,
       description: r.description,
       url: r.url,
-      language: r.primaryLanguage?.name ?? null,
+      language: lang,
+      languageColor: getLanguageColor(lang),
+      languageBreakdown: computeBreakdown(edges),
       stargazerCount: r.stargazerCount,
       forkCount: r.forkCount,
       topics: r.repositoryTopics?.nodes?.map((t: any) => t.topic.name) ?? [],
       updatedAt: r.updatedAt,
       isArchived: r.isArchived,
       isPinned: true,
-    }),
-  );
+    };
+  });
 }
 
-// GitHub REST — public repos, no auth required
-async function fetchAllRepos(): Promise<GitHubRepo[]> {
+async function fetchAllRepos(USERNAME: string): Promise<GitHubRepo[]> {
   const res = await fetch(
     `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`,
     { headers: { Accept: "application/vnd.github+json" } },
@@ -107,23 +137,26 @@ async function fetchAllRepos(): Promise<GitHubRepo[]> {
   if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
   const data = await res.json();
 
-  return data.map(
-    (r: any): GitHubRepo => ({
+  return data.map((r: any): GitHubRepo => {
+    const lang = r.language ?? null;
+    return {
       name: r.name,
       description: r.description,
       url: r.html_url,
-      language: r.language,
+      language: lang,
+      languageColor: getLanguageColor(lang),
+      languageBreakdown: [],
       stargazerCount: r.stargazers_count,
       forkCount: r.forks_count,
       topics: r.topics ?? [],
       updatedAt: r.updated_at,
       isArchived: r.archived,
       isPinned: false,
-    }),
-  );
+    };
+  });
 }
 
-export function useGitHub(): UseGitHubResult {
+export function useGitHub(username: string): UseGitHubResult {
   const [pinned, setPinned] = useState<GitHubRepo[]>([]);
   const [all, setAll] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -136,30 +169,20 @@ export function useGitHub(): UseGitHubResult {
       setLoading(true);
       setError(null);
       try {
-        // Both fetches in parallel; pinned may silently return [] if GraphQL
-        // requires auth — REST always works for public profiles
         const [pinnedData, allData] = await Promise.all([
-          fetchPinnedRepos().catch(() => []),
-          fetchAllRepos(),
+          fetchPinnedRepos(username).catch(() => []),
+          fetchAllRepos(username),
         ]);
 
         if (cancelled) return;
 
-        // Mark pinned repos in the all-repos list too
         const pinnedNames = new Set(pinnedData.map((r) => r.name));
         const allMarked = allData.map((r) => ({
           ...r,
           isPinned: pinnedNames.has(r.name),
         }));
 
-        // If GraphQL failed (no auth), infer pinned from the hardcoded list below
-        // so the UI still has a "pinned" tab that makes sense
-        const finalPinned =
-          pinnedData.length > 0
-            ? pinnedData
-            : allMarked.filter((r) => FALLBACK_PINNED.includes(r.name));
-
-        setPinned(finalPinned);
+        setPinned(pinnedData.length > 0 ? pinnedData : []);
         setAll(allMarked);
       } catch (err: any) {
         if (!cancelled) setError(err.message ?? "Failed to load repos");
@@ -177,10 +200,8 @@ export function useGitHub(): UseGitHubResult {
   return { pinned, all, loading, error };
 }
 
-// Fallback pinned list (used when GraphQL auth is unavailable)
-// Update this to match your actual pinned repos on GitHub
-const FALLBACK_PINNED = [
+/* const FALLBACK_PINNED = [
   "WebScrapper---Altissia",
   "nixosconfig",
   "neovimconfig",
-];
+]; */

@@ -1,5 +1,5 @@
-import { meta } from "../data/portfolio";
-import type { Theme } from "../hooks/useTheme";
+import { meta } from "@/data/portfolio";
+import type { Theme } from "@/hooks/useTheme";
 
 interface ContactProps {
   theme: Theme;

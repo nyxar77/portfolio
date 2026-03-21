@@ -1,3 +1,4 @@
+import "./index.css";
 import { useState } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { About } from "./components/About";
@@ -41,8 +42,18 @@ export default function App() {
         theme={theme}
         onThemeToggle={toggle}
       />
-      {/* offset by collapsed sidebar width (60px) */}
-      <main style={{ flex: 1, paddingLeft: "60px" }}>{renderSection()}</main>
+      <main
+        style={{
+          flex: 1,
+          paddingLeft: "60px",
+          background: bg,
+          minHeight: "100vh",
+          transition: "background 0.3s ease",
+          boxSizing: "border-box",
+        }}
+      >
+        {renderSection()}
+      </main>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { meta } from "@/data/portfolio";
-import { meta } from "../data/portfolio";
-import type { Theme } from "../hooks/useTheme";
+import type { Theme } from "@/hooks/useTheme";
 
 interface AboutProps {
   theme: Theme;
@@ -17,7 +16,6 @@ export function About({ theme }: AboutProps) {
     <section
       style={{ minHeight: "100vh", padding: "80px 60px", maxWidth: "760px" }}
     >
-      {/* Terminal prompt */}
       <p
         style={{
           fontFamily: '"JetBrains Mono", monospace',
@@ -29,7 +27,6 @@ export function About({ theme }: AboutProps) {
         <span style={{ color: red }}>~/</span> whoami
       </p>
 
-      {/* Name */}
       <h1
         style={{
           fontFamily: '"Syne", sans-serif',
@@ -45,7 +42,6 @@ export function About({ theme }: AboutProps) {
         <span style={{ color: red }}>.</span>
       </h1>
 
-      {/* Title */}
       <p
         style={{
           fontFamily: '"JetBrains Mono", monospace',
@@ -58,7 +54,6 @@ export function About({ theme }: AboutProps) {
         {meta.title}
       </p>
 
-      {/* Bio */}
       <div
         style={{
           borderLeft: `2px solid ${red}`,
@@ -78,7 +73,6 @@ export function About({ theme }: AboutProps) {
         </p>
       </div>
 
-      {/* Tagline */}
       <div
         style={{
           display: "inline-block",
@@ -99,7 +93,6 @@ export function About({ theme }: AboutProps) {
         {meta.tagline}
       </div>
 
-      {/* Meta badges */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         <span
           style={{
@@ -131,7 +124,6 @@ export function About({ theme }: AboutProps) {
         </a>
       </div>
 
-      {/* Avatar card */}
       <div
         style={{
           marginTop: "60px",

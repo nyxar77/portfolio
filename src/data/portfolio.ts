@@ -1,9 +1,5 @@
-// ============================================================
-//  PORTFOLIO DATA — edit everything here, UI updates itself
-// ============================================================
-
 export const meta = {
-  name: "nyxar_77",
+  name: "Abderrahmane Drissi",
   title: "Software Developer",
   tagline: "Building things that live in terminals and text editors.",
   bio: "I'm a developer who loves NixOS, Neovim, and clean config files. I spend most of my time tinkering with system configs, scripting automation, and occasionally shipping actual products.",
@@ -33,7 +29,7 @@ export interface Project {
   featured: boolean;
 }
 
-export const projects: Project[] = [
+/* export const projects: Project[] = [
   {
     name: "WebScrapper---Altissia",
     description:
@@ -67,7 +63,7 @@ export const projects: Project[] = [
     tags: ["neovim", "lua", "editor", "dotfiles"],
     featured: true,
   },
-];
+]; */
 
 export interface Skill {
   category: string;
