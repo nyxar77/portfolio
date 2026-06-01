@@ -277,6 +277,53 @@ export function Sidebar({
             GitHub
           </span>
         </a>
+
+        {meta.email && (
+          <a
+            href={`mailto:${meta.email}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "10px 10px",
+              borderRadius: "8px",
+              color: subtext,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              transition: "background 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background =
+                hoverBg;
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background =
+                "transparent";
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: "15px",
+                flexShrink: 0,
+                marginLeft: "2px",
+              }}
+            >
+              ✉
+            </span>
+            <span
+              style={{
+                fontFamily: "Geist, Inter, sans-serif",
+                fontSize: "13px",
+                opacity: expanded ? 1 : 0,
+                transition: "opacity 0.15s ease",
+              }}
+            >
+              Email
+            </span>
+          </a>
+        )}
       </div>
     </aside>
   );

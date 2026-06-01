@@ -29,6 +29,20 @@ interface UseGitHubResult {
   error: string | null;
 }
 
+export interface GitHubContribution {
+  title: string;
+  url: string;
+  repository: string;
+  state: string;
+  updatedAt: string;
+}
+
+interface UseGitHubContributionsResult {
+  contributions: GitHubContribution[];
+  loading: boolean;
+  error: string | null;
+}
+
 const LANGUAGE_COLORS: Record<string, string> = {
   JavaScript: "#f1e05a",
   TypeScript: "#3178c6",
@@ -50,6 +64,13 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Dart: "#00B4AB",
 };
 
+const FEATURED_REPOS = [
+  "covoitEmsi",
+  "bookStore",
+  "neovimconfig",
+  "nixosconfig",
+];
+
 export function getLanguageColor(lang: string | null): string {
   if (!lang) return "#9399b2";
   return LANGUAGE_COLORS[lang] ?? "#9399b2";
@@ -69,64 +90,6 @@ function computeBreakdown(
       color: getLanguageColor(e.node.name),
     }))
     .filter((s) => s.pct > 0);
-}
-
-async function fetchPinnedRepos(USERNAME: string): Promise<GitHubRepo[]> {
-  const query = `{
-    user(login: "${USERNAME}") {
-      pinnedItems(first: 6, types: REPOSITORY) {
-        nodes {
-          ... on Repository {
-            name
-            description
-            url
-            stargazerCount
-            forkCount
-            primaryLanguage { name }
-            languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
-              edges { size node { name } }
-            }
-            repositoryTopics(first: 5) { nodes { topic { name } } }
-            updatedAt
-            isArchived
-          }
-        }
-      }
-    }
-  }`;
-
-  const res = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
-    },
-    body: JSON.stringify({ query }),
-  });
-
-  if (!res.ok) return [];
-  const json = await res.json();
-  if (json.errors) return [];
-  const nodes = json?.data?.user?.pinnedItems?.nodes ?? [];
-
-  return nodes.map((r: any): GitHubRepo => {
-    const lang = r.primaryLanguage?.name ?? null;
-    const edges = r.languages?.edges ?? [];
-    return {
-      name: r.name,
-      description: r.description,
-      url: r.url,
-      language: lang,
-      languageColor: getLanguageColor(lang),
-      languageBreakdown: computeBreakdown(edges),
-      stargazerCount: r.stargazerCount,
-      forkCount: r.forkCount,
-      topics: r.repositoryTopics?.nodes?.map((t: any) => t.topic.name) ?? [],
-      updatedAt: r.updatedAt,
-      isArchived: r.isArchived,
-      isPinned: true,
-    };
-  });
 }
 
 async function fetchAllRepos(USERNAME: string): Promise<GitHubRepo[]> {
@@ -169,20 +132,19 @@ export function useGitHub(username: string): UseGitHubResult {
       setLoading(true);
       setError(null);
       try {
-        const [pinnedData, allData] = await Promise.all([
-          fetchPinnedRepos(username).catch(() => []),
-          fetchAllRepos(username),
-        ]);
+        const allData = await fetchAllRepos(username);
 
         if (cancelled) return;
 
-        const pinnedNames = new Set(pinnedData.map((r) => r.name));
+        const pinnedNames = new Set(
+          FEATURED_REPOS.map((name) => name.toLowerCase()),
+        );
         const allMarked = allData.map((r) => ({
           ...r,
-          isPinned: pinnedNames.has(r.name),
+          isPinned: pinnedNames.has(r.name.toLowerCase()),
         }));
 
-        setPinned(pinnedData.length > 0 ? pinnedData : []);
+        setPinned(allMarked.filter((r) => r.isPinned));
         setAll(allMarked);
       } catch (err: any) {
         if (!cancelled) setError(err.message ?? "Failed to load repos");
@@ -200,8 +162,56 @@ export function useGitHub(username: string): UseGitHubResult {
   return { pinned, all, loading, error };
 }
 
-/* const FALLBACK_PINNED = [
-  "WebScrapper---Altissia",
-  "nixosconfig",
-  "neovimconfig",
-]; */
+export function useGitHubContributions(
+  username: string,
+): UseGitHubContributionsResult {
+  const [contributions, setContributions] = useState<GitHubContribution[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const query = encodeURIComponent(`type:pr author:${username}`);
+        const res = await fetch(
+          `https://api.github.com/search/issues?q=${query}&sort=updated&order=desc&per_page=6`,
+          { headers: { Accept: "application/vnd.github+json" } },
+        );
+        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+
+        const data = await res.json();
+        if (cancelled) return;
+
+        setContributions(
+          (data.items ?? []).map((item: any): GitHubContribution => {
+            const [, owner, repo] =
+              item.repository_url.match(/repos\/([^/]+)\/([^/]+)$/) ?? [];
+
+            return {
+              title: item.title,
+              url: item.html_url,
+              repository: owner && repo ? `${owner}/${repo}` : "unknown repo",
+              state: item.state,
+              updatedAt: item.updated_at,
+            };
+          }),
+        );
+      } catch (err: any) {
+        if (!cancelled) setError(err.message ?? "Failed to load PRs");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [username]);
+
+  return { contributions, loading, error };
+}

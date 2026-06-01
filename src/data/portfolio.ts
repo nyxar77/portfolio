@@ -1,10 +1,10 @@
 export const meta = {
   name: "Abderrahmane Drissi",
-  title: "Software Developer",
-  tagline: "Building things that live in terminals and text editors.",
-  bio: "I'm a developer who loves NixOS, Neovim, and clean config files. I spend most of my time tinkering with system configs, scripting automation, and occasionally shipping actual products.",
+  title: "Software developer. 1st-year engineering student at EMSI.",
+  tagline: "I build web apps, automation scripts, and Linux tooling.",
+  bio: "Currently a 1st-year engineering student at EMSI Rabat. I work mostly with React, Django, Laravel, Nix, and Linux.",
   github: "https://github.com/nyxar77",
-  email: "", // fill in if you want
+  email: "dev@nyxar.space",
   location: "Morocco",
   avatar: "https://avatars.githubusercontent.com/u/153492661?v=4",
 };
@@ -18,52 +18,43 @@ export const navItems: { id: Section; label: string; icon: string }[] = [
   { id: "contact", label: "Contact", icon: "◉" },
 ];
 
-export interface Project {
-  name: string;
-  description: string;
-  url: string;
-  language: string;
-  languageColor: string;
-  stars: number;
-  tags: string[];
-  featured: boolean;
+export interface RepoSpotlight {
+  repo: string;
+  label: string;
+  note: string;
+  fallbackDescription: string;
 }
 
-/* export const projects: Project[] = [
+export const repoSpotlights: RepoSpotlight[] = [
   {
-    name: "WebScrapper---Altissia",
-    description:
-      "A JavaScript web scraper targeting the Altissia language-learning platform — automates lesson navigation and answer extraction.",
-    url: "https://github.com/nyxar77/WebScrapper---Altissia",
-    language: "JavaScript",
-    languageColor: "#f1e05a",
-    stars: 1,
-    tags: ["automation", "scraping", "javascript"],
-    featured: true,
+    repo: "covoitEmsi",
+    label: "Built app",
+    note: "Campus commute product",
+    fallbackDescription:
+      "A carpooling app for EMSI students, built with ride posting, booking, and notifications.",
   },
   {
-    name: "nixosconfig",
-    description:
-      "My personal NixOS configuration — declarative, reproducible, and obsessively organised. Covers home-manager, flakes, and system modules.",
-    url: "https://github.com/nyxar77/nixosconfig",
-    language: "Nix",
-    languageColor: "#7e7eff",
-    stars: 2,
-    tags: ["nixos", "dotfiles", "linux", "flakes"],
-    featured: true,
+    repo: "bookStore",
+    label: "Built app",
+    note: "Bookstore application",
+    fallbackDescription:
+      "A bookstore app with book browsing and basic data management.",
   },
   {
-    name: "neovimconfig",
-    description:
-      "A fully Lua-based Neovim configuration. Lazy-loaded plugins, custom keymaps, LSP, Treesitter, and a clean aesthetic.",
-    url: "https://github.com/nyxar77/neovimconfig",
-    language: "Lua",
-    languageColor: "#000080",
-    stars: 1,
-    tags: ["neovim", "lua", "editor", "dotfiles"],
-    featured: true,
+    repo: "neovimconfig",
+    label: "Daily tooling",
+    note: "Editor workflow",
+    fallbackDescription:
+      "My Lua Neovim config with plugins, LSP, Treesitter, and keymaps.",
   },
-]; */
+  {
+    repo: "nixosconfig",
+    label: "Daily tooling",
+    note: "Reproducible workstation",
+    fallbackDescription:
+      "My NixOS config for system modules, Home Manager, flakes, shell tools, and editor setup.",
+  },
+];
 
 export interface Skill {
   category: string;
@@ -72,25 +63,19 @@ export interface Skill {
 
 export const skills: Skill[] = [
   {
-    category: "Languages",
-    items: ["Lua", "JavaScript", "TypeScript", "Nix", "Bash", "Python"],
+    category: "Build",
+    items: ["TypeScript", "React", "JavaScript", "HTML", "CSS", "Python"],
   },
   {
-    category: "Tools & Editors",
-    items: ["Neovim", "Git", "NixOS", "Home Manager", "tmux", "zsh"],
+    category: "Automate",
+    items: ["Bash", "Shell scripting", "Web scraping", "Git", "Linux"],
   },
   {
-    category: "Frontend",
-    items: ["React", "Tailwind CSS", "HTML", "CSS"],
+    category: "Configure",
+    items: ["Nix", "NixOS", "Nixpkgs", "Home Manager", "Flakes", "tmux"],
   },
   {
-    category: "Systems & Infra",
-    items: [
-      "Linux",
-      "NixOS",
-      "Flakes",
-      "Declarative config",
-      "Shell scripting",
-    ],
+    category: "Work",
+    items: ["Neovim", "Lua", "Go", "Java", "Open source", "Declarative config"],
   },
 ];

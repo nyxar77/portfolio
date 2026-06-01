@@ -11,3 +11,12 @@ await Bun.build({
   },
   plugins: [tailwind],
 });
+
+await Bun.write(
+  "./dist/resume/resume-en.pdf",
+  Bun.file("./resume/resume-en.pdf"),
+);
+await Bun.write(
+  "./dist/resume/resume-fr.pdf",
+  Bun.file("./resume/resume-fr.pdf"),
+);
