@@ -83,15 +83,16 @@ a {
 }
 
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 12px;
-  z-index: 10;
+  left: 50%;
+  z-index: 100;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 18px;
+  width: min(1180px, calc(100% - 40px));
   min-height: 76px;
-  margin-top: 12px;
   padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -100,6 +101,7 @@ a {
     rgba(17, 17, 27, 0.82);
   box-shadow: 0 14px 46px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(18px);
+  transform: translateX(-50%);
 }
 
 .brand {
@@ -500,6 +502,7 @@ h1 {
 }
 
 .section {
+  scroll-margin-top: 116px;
   padding: 96px 0;
   border-top: 1px solid var(--line);
 }
@@ -927,6 +930,8 @@ h1 {
   .topbar {
     grid-template-columns: 1fr;
     align-items: stretch;
+    gap: 8px;
+    padding: 8px;
   }
 
   .brand {
@@ -940,7 +945,11 @@ h1 {
 
   .hero {
     gap: 22px;
-    padding-top: 46px;
+    padding-top: 138px;
+  }
+
+  .section {
+    scroll-margin-top: 148px;
   }
 
   .signal-panel {
@@ -971,12 +980,9 @@ h1 {
   }
 
   .topbar {
-    position: relative;
-    top: 0;
-    gap: 8px;
+    top: 8px;
+    width: calc(100% - 20px);
     min-height: 0;
-    margin-top: 10px;
-    padding: 8px;
     border-radius: 10px;
   }
 
@@ -1030,7 +1036,7 @@ h1 {
   }
 
   .hero {
-    padding: 30px 0 46px;
+    padding: 126px 0 46px;
   }
 
   h1 {
@@ -1080,6 +1086,7 @@ h1 {
   }
 
   .section {
+    scroll-margin-top: 136px;
     padding: 54px 0;
   }
 
