@@ -257,16 +257,16 @@ export default function App() {
               {resumeOpen && (
                 <div className="resume-dropdown" role="menu">
                   <a
-                    href="/resume/resume-en.pdf"
-                    download="abderrahmane-drissi-resume-en.pdf"
+                    href="/resume/Abderrahmane_Drissi_Resume_EN.pdf"
+                    download="Abderrahmane_Drissi_Resume_EN.pdf"
                     role="menuitem"
                     onClick={() => setResumeOpen(false)}
                   >
                     English
                   </a>
                   <a
-                    href="/resume/resume-fr.pdf"
-                    download="abderrahmane-drissi-resume-fr.pdf"
+                    href="/resume/Abderrahmane_Drissi_CV_FR.pdf"
+                    download="Abderrahmane_Drissi_CV_FR.pdf"
                     role="menuitem"
                     onClick={() => setResumeOpen(false)}
                   >

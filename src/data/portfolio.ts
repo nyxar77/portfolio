@@ -27,6 +27,13 @@ export interface RepoSpotlight {
 
 export const repoSpotlights: RepoSpotlight[] = [
   {
+    repo: "videospeed-firefox",
+    label: "Extension port",
+    note: "Firefox browser tooling",
+    fallbackDescription:
+      "A Firefox port of the VideoSpeed extension for controlling video playback speed in the browser.",
+  },
+  {
     repo: "covoitEmsi",
     label: "Built app",
     note: "Campus commute product",

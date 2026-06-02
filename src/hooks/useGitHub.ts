@@ -1,5 +1,6 @@
 // import { BEARER_TOKEN } from "@/env";
 import { useState, useEffect } from "react";
+import { repoSpotlights } from "@/data/portfolio";
 
 export interface LangSegment {
   name: string;
@@ -63,13 +64,6 @@ const LANGUAGE_COLORS: Record<string, string> = {
   Swift: "#F05138",
   Dart: "#00B4AB",
 };
-
-const FEATURED_REPOS = [
-  "covoitEmsi",
-  "bookStore",
-  "neovimconfig",
-  "nixosconfig",
-];
 
 export function getLanguageColor(lang: string | null): string {
   if (!lang) return "#9399b2";
@@ -137,7 +131,7 @@ export function useGitHub(username: string): UseGitHubResult {
         if (cancelled) return;
 
         const pinnedNames = new Set(
-          FEATURED_REPOS.map((name) => name.toLowerCase()),
+          repoSpotlights.map((spotlight) => spotlight.repo.toLowerCase()),
         );
         const allMarked = allData.map((r) => ({
           ...r,

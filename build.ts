@@ -13,10 +13,15 @@ await Bun.build({
 });
 
 await Bun.write(
-  "./dist/resume/resume-en.pdf",
+  "./dist/resume/Abderrahmane_Drissi_Resume_EN.pdf",
   Bun.file("./resume/Abderrahmane_Drissi_Resume_EN.pdf"),
 );
 await Bun.write(
-  "./dist/resume/resume-fr.pdf",
+  "./dist/resume/Abderrahmane_Drissi_CV_FR.pdf",
   Bun.file("./resume/Abderrahmane_Drissi_CV_FR.pdf"),
 );
+
+await Promise.allSettled([
+  Bun.file("./dist/resume/resume-en.pdf").delete(),
+  Bun.file("./dist/resume/resume-fr.pdf").delete(),
+]);
