@@ -1,8 +1,8 @@
 export const meta = {
   name: "Abderrahmane Drissi",
-  title: "Software developer. 1st-year engineering student at EMSI.",
+  title: "Software developer focused on web apps, Linux tooling, and automation.",
   tagline: "I build web apps, automation scripts, and Linux tooling.",
-  bio: "Currently a 1st-year engineering student at EMSI Rabat. I work mostly with React, Django, Laravel, Nix, and Linux.",
+  bio: "I build practical software for the web, Android, and Linux, with a focus on local-first apps, automation, and tools that fit into existing workflows.",
   github: "https://github.com/nyxar77",
   email: "dev@nyxar.space",
   location: "Morocco",
@@ -27,39 +27,46 @@ export interface RepoSpotlight {
 
 export const repoSpotlights: RepoSpotlight[] = [
   {
+    repo: "Pulse",
+    label: "Product app",
+    note: "Offline workout planner",
+    fallbackDescription:
+      "A local-first workout planner for Android and the web, with offline data, exercise tracking, and JSON programme import/export.",
+  },
+  {
+    repo: "projectorctl",
+    label: "Linux tooling",
+    note: "Hyprland display switcher",
+    fallbackDescription:
+      "A display switcher for Hyprland laptops with a CLI, Quickshell panel, projector layouts, Nix integration, and unplug recovery.",
+  },
+  {
+    repo: "caelestia-extras",
+    label: "Open source",
+    note: "Linux desktop integrations",
+    fallbackDescription:
+      "A Go tool that keeps cursor, GTK, Qt, portals, and other desktop integrations in sync with Caelestia themes.",
+  },
+  {
+    repo: "homeconfig",
+    label: "Infrastructure",
+    note: "Home Manager workstation",
+    fallbackDescription:
+      "A Home Manager configuration for Hyprland, Caelestia, and a reproducible Linux desktop environment.",
+  },
+  {
+    repo: "Elene",
+    label: "Desktop utility",
+    note: "Local Android package manager",
+    fallbackDescription:
+      "A local Android application installer and updater built around ADB, with a Nix development environment and documented checks.",
+  },
+  {
     repo: "videospeed-firefox",
-    label: "Extension port",
-    note: "Firefox browser tooling",
+    label: "Browser tooling",
+    note: "Firefox extension port",
     fallbackDescription:
-      "A Firefox port of the VideoSpeed extension for controlling video playback speed in the browser.",
-  },
-  {
-    repo: "covoitEmsi",
-    label: "Built app",
-    note: "Campus commute product",
-    fallbackDescription:
-      "A carpooling app for EMSI students, built with ride posting, booking, and notifications.",
-  },
-  {
-    repo: "bookStore",
-    label: "Built app",
-    note: "Bookstore application",
-    fallbackDescription:
-      "A bookstore app with book browsing and basic data management.",
-  },
-  {
-    repo: "neovimconfig",
-    label: "Daily tooling",
-    note: "Editor workflow",
-    fallbackDescription:
-      "My Lua Neovim config with plugins, LSP, Treesitter, and keymaps.",
-  },
-  {
-    repo: "nixosconfig",
-    label: "Daily tooling",
-    note: "Reproducible workstation",
-    fallbackDescription:
-      "My NixOS config for system modules, Home Manager, flakes, shell tools, and editor setup.",
+      "A Firefox-compatible port of Video Speed Controller for controlling HTML5 video playback with keyboard shortcuts.",
   },
 ];
 

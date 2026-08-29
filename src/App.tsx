@@ -24,9 +24,9 @@ const contactLinks = [
 ];
 
 const principles = [
-  "Full-stack apps with React, Django, Laravel, and MySQL.",
-  "Automation scripts for scraping, AI-assisted answers, and boring school workflows.",
-  "Linux and NixOS configs for my daily machine, editor, shell, and tools.",
+  "Local-first apps for Android and the web, with offline data, tracking, and import/export.",
+  "Linux tooling with CLI workflows, desktop integrations, Hyprland, and Nix/Home Manager.",
+  "Browser extensions and automation that remove repetitive work from everyday workflows.",
 ];
 
 function timeAgo(date: string) {
@@ -312,12 +312,12 @@ export default function App() {
               <dd>Web apps</dd>
             </div>
             <div>
-              <dt>Stack</dt>
-              <dd>React, Django, Nix</dd>
+              <dt>Areas</dt>
+              <dd>Web, Android, Linux</dd>
             </div>
             <div>
               <dt>Study</dt>
-              <dd>1st-year engineer at EMSI Rabat</dd>
+              <dd>Engineering student at EMSI Rabat</dd>
             </div>
           </dl>
         </aside>
@@ -367,7 +367,7 @@ export default function App() {
           <h2 id="contact-title">Contact.</h2>
         </div>
         <div className="contact-card">
-          <p>Email me or check the GitHub repos.</p>
+          <p>For web apps, automation, Linux tooling, or open-source collaboration, email me or check the GitHub repos.</p>
           <div className="contact-links">
             {contactLinks.map((link) => (
               <a
