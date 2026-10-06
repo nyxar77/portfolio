@@ -73,12 +73,10 @@ a {
 .hero > *,
 .section-heading > *,
 .work-layout > *,
-.contact-card > *,
 .repo-row > *,
 .profile-row > div,
 .stats dd,
-.oss-item,
-.contact-links a {
+.oss-item {
   min-width: 0;
 }
 
@@ -141,7 +139,7 @@ a {
 .nav-links {
   position: relative;
   display: grid;
-  grid-template-columns: auto repeat(3, minmax(82px, auto));
+  grid-template-columns: auto repeat(2, minmax(82px, auto));
   align-items: center;
   justify-content: flex-end;
   gap: 0;
@@ -171,7 +169,7 @@ a {
   position: relative;
   flex: 0 1 auto;
   min-width: 0;
-  padding: 9px 13px 9px 34px;
+  padding: 9px 16px;
   border-left: 1px solid var(--line);
   color: var(--muted);
   font-size: 12px;
@@ -183,15 +181,6 @@ a {
   transition:
     background 0.16s ease,
     color 0.16s ease;
-}
-
-.nav-links a::before {
-  content: attr(data-step);
-  position: absolute;
-  left: 12px;
-  color: var(--quiet);
-  font-size: 10px;
-  font-weight: 800;
 }
 
 .nav-links a::after {
@@ -355,8 +344,7 @@ h1 {
 }
 
 .button:hover,
-.text-link:hover,
-.contact-links a:hover {
+.text-link:hover {
   transform: translateY(-1px);
 }
 
@@ -529,8 +517,7 @@ h1 {
 }
 
 .intro-grid p,
-.skill-card,
-.contact-card {
+.skill-card {
   border: 1px solid var(--line);
   border-radius: 8px;
   background:
@@ -664,8 +651,7 @@ h1 {
 
 .repo-row h3 a:hover,
 .oss-item:hover strong,
-.text-link:hover,
-.contact-links a:hover strong {
+.text-link:hover {
   color: var(--red);
   text-decoration-color: var(--red);
 }
@@ -823,86 +809,24 @@ h1 {
   padding: 7px 10px;
 }
 
-.contact {
-  padding-bottom: 120px;
+.site-footer {
+  padding: 72px 0 96px;
+  border-top: 1px solid var(--line);
+  text-align: center;
 }
 
-.contact-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 32px;
-  padding: 28px;
-  border-color: var(--red-line);
-  background:
-    linear-gradient(135deg, var(--red-soft), transparent 36%),
-    linear-gradient(135deg, rgba(148, 226, 213, 0.08), transparent 42%),
-    linear-gradient(315deg, rgba(180, 190, 254, 0.09), transparent 36%),
-    rgba(24, 24, 37, 0.88);
-}
-
-.contact-card p {
+.site-footer p {
   margin: 0;
   color: var(--muted);
-  font-size: 18px;
-  line-height: 1.65;
-}
-
-.contact-links {
-  display: grid;
-  gap: 10px;
-}
-
-.contact-links a {
-  display: grid;
-  gap: 5px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel-strong);
-  text-decoration: none;
-  transition:
-    transform 0.16s ease,
-    border-color 0.16s ease,
-    background 0.16s ease;
-}
-
-.contact-links a:first-child {
-  border-color: var(--red-line);
-  background: var(--red-soft);
-}
-
-.contact-links a:hover {
-  border-color: rgba(243, 139, 168, 0.56);
-  background: rgba(243, 139, 168, 0.10);
-}
-
-.contact-links span {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-}
-
-.contact-links strong {
-  overflow-wrap: anywhere;
-  color: var(--text);
-  text-decoration: underline;
-  text-decoration-color: var(--red-line);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 4px;
-}
-
-.contact-links small {
-  color: var(--quiet);
-  font-size: 13px;
+  font-family:
+    "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
 }
 
 @media (max-width: 980px) {
   .hero,
   .section-heading,
-  .work-layout,
-  .contact-card {
+  .work-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1008,7 +932,7 @@ h1 {
   }
 
   .nav-links {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     overflow: hidden;
   }
 
@@ -1030,7 +954,6 @@ h1 {
     border-left: 1px solid var(--line);
   }
 
-  .nav-links a::before,
   .nav-links a::after {
     content: none;
   }
@@ -1053,8 +976,7 @@ h1 {
     line-height: 1.22;
   }
 
-  .bio,
-  .contact-card p {
+  .bio {
     font-size: 15px;
   }
 
@@ -1184,21 +1106,12 @@ h1 {
   }
 
   .oss-panel,
-  .skill-card,
-  .contact-card {
+  .skill-card {
     padding: 16px;
   }
 
-  .contact {
-    padding-bottom: 82px;
-  }
-
-  .contact-card {
-    gap: 20px;
-  }
-
-  .contact-links a {
-    padding: 14px;
+  .site-footer {
+    padding: 52px 0 68px;
   }
 
   .toast {
@@ -1244,8 +1157,7 @@ h1 {
   }
 
   .bio,
-  .repo-row p,
-  .contact-card p {
+  .repo-row p {
     font-size: 14px;
   }
 

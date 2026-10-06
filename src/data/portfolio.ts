@@ -4,18 +4,17 @@ export const meta = {
   tagline: "I build web apps, automation scripts, and Linux tooling.",
   bio: "I build practical software for the web, Android, and Linux, with a focus on local-first apps, automation, and tools that fit into existing workflows.",
   github: "https://github.com/nyxar77",
-  email: "dev@nyxar.space",
+  email: "dev@nyxar77.xyz",
   location: "Morocco",
   avatar: "https://avatars.githubusercontent.com/u/153492661?v=4",
 };
 
-export type Section = "about" | "projects" | "skills" | "contact";
+export type Section = "about" | "projects" | "skills";
 
 export const navItems: { id: Section; label: string; icon: string }[] = [
   { id: "about", label: "About", icon: "◈" },
   { id: "projects", label: "Projects", icon: "◇" },
   { id: "skills", label: "Skills", icon: "◆" },
-  { id: "contact", label: "Contact", icon: "◉" },
 ];
 
 export interface RepoSpotlight {

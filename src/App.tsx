@@ -4,25 +4,6 @@ import logo from "./assets/logo.svg";
 import { meta, repoSpotlights, skills } from "./data/portfolio";
 import { useGitHub, useGitHubContributions } from "./hooks/useGitHub";
 
-const contactLinks = [
-  ...(meta.email
-    ? [
-        {
-          label: "Email",
-          value: meta.email,
-          href: `mailto:${meta.email}`,
-          note: "Main contact",
-        },
-      ]
-    : []),
-  {
-    label: "GitHub",
-    value: "github.com/nyxar77",
-    href: meta.github,
-    note: "Repos and configs",
-  },
-];
-
 const principles = [
   "Local-first apps for Android and the web, with offline data, tracking, and import/export.",
   "Linux tooling with CLI workflows, desktop integrations, Hyprland, and Nix/Home Manager.",
@@ -51,19 +32,13 @@ function WorkSection() {
     error: contributionsError,
   } = useGitHubContributions("nyxar77");
 
-  const repoByName = new Map(all.map((repo) => [repo.name.toLowerCase(), repo]));
+  const repoByName = new Map(
+    all.map((repo) => [repo.name.toLowerCase(), repo]),
+  );
   const orderedRepos = repoSpotlights.map((spotlight) => ({
     spotlight,
     repo: repoByName.get(spotlight.repo.toLowerCase()) ?? null,
   }));
-
-  const nixpkgsContributions = contributions.filter((item) =>
-    item.repository.toLowerCase().includes("nixos/nixpkgs"),
-  );
-  const visibleContributions =
-    nixpkgsContributions.length > 0
-      ? nixpkgsContributions.slice(0, 3)
-      : contributions.slice(0, 3);
 
   return (
     <section id="work" className="section" aria-labelledby="work-title">
@@ -93,10 +68,7 @@ function WorkSection() {
               const topics = repo?.topics.slice(0, 4) ?? [];
 
               return (
-                <article
-                  className="repo-row"
-                  key={spotlight.repo}
-                >
+                <article className="repo-row" key={spotlight.repo}>
                   <div className="repo-index">
                     {String(index + 1).padStart(2, "0")}
                   </div>
@@ -151,7 +123,7 @@ function WorkSection() {
         <aside className="oss-panel" aria-labelledby="oss-title">
           <p className="eyebrow">Open source</p>
           <h3 id="oss-title">Recent PR activity</h3>
-          <p>Fetched from GitHub. Nixpkgs PRs show first when available.</p>
+          <p>Recent contributions across different open-source projects.</p>
 
           {contributionsLoading && (
             <div className="oss-list">
@@ -160,9 +132,9 @@ function WorkSection() {
             </div>
           )}
 
-          {!contributionsLoading && visibleContributions.length > 0 && (
+          {!contributionsLoading && contributions.length > 0 && (
             <div className="oss-list">
-              {visibleContributions.map((item) => (
+              {contributions.map((item) => (
                 <a
                   className="oss-item"
                   href={item.url}
@@ -221,15 +193,8 @@ export default function App() {
         </a>
         <div className="nav-links">
           <span aria-hidden="true">~/portfolio</span>
-          <a href="#work" data-step="01">
-            Work
-          </a>
-          <a href="#skills" data-step="02">
-            Skills
-          </a>
-          <a href="#contact" data-step="03">
-            Contact
-          </a>
+          <a href="#work">Work</a>
+          <a href="#skills">Skills</a>
         </div>
       </nav>
 
@@ -298,11 +263,7 @@ export default function App() {
             <div>
               <dt>Email</dt>
               <dd>
-                <button
-                  className="stat-copy"
-                  type="button"
-                  onClick={copyEmail}
-                >
+                <button className="stat-copy" type="button" onClick={copyEmail}>
                   {meta.email}
                 </button>
               </dd>
@@ -357,37 +318,9 @@ export default function App() {
         </div>
       </section>
 
-      <section
-        id="contact"
-        className="section contact"
-        aria-labelledby="contact-title"
-      >
-        <div className="section-heading">
-          <p className="eyebrow">Contact</p>
-          <h2 id="contact-title">Contact.</h2>
-        </div>
-        <div className="contact-card">
-          <p>For web apps, automation, Linux tooling, or open-source collaboration, email me or check the GitHub repos.</p>
-          <div className="contact-links">
-            {contactLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                rel={
-                  link.href.startsWith("mailto:")
-                    ? undefined
-                    : "noopener noreferrer"
-                }
-              >
-                <span>{link.label}</span>
-                <strong>{link.value}</strong>
-                <small>{link.note}</small>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <footer className="site-footer">
+        <p>That’s all. Thanks for looking :)</p>
+      </footer>
       <div className={`toast${copied ? " is-visible" : ""}`} role="status">
         copied to <span className="clipboard-icon" aria-label="clipboard" />
       </div>

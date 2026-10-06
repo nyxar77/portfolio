@@ -38,6 +38,33 @@ export interface GitHubContribution {
   updatedAt: string;
 }
 
+const CONTRIBUTION_LIMIT = 4;
+const CONTRIBUTION_MAX_AGE_DAYS = 120;
+const CONTRIBUTIONS_PER_REPOSITORY = 2;
+
+export function selectContributions(
+  contributions: GitHubContribution[],
+  username: string,
+): GitHubContribution[] {
+  const cutoff = Date.now() - CONTRIBUTION_MAX_AGE_DAYS * 86400000;
+  const repositoryCounts = new Map<string, number>();
+
+  return contributions
+    .filter(({ repository, state, updatedAt }) => {
+      const owner = repository.split("/")[0]?.toLowerCase();
+      if (owner === username.toLowerCase() || state === "closed") return false;
+      return new Date(updatedAt).getTime() >= cutoff;
+    })
+    .filter(({ repository }) => {
+      const key = repository.toLowerCase();
+      const count = repositoryCounts.get(key) ?? 0;
+      if (count >= CONTRIBUTIONS_PER_REPOSITORY) return false;
+      repositoryCounts.set(key, count + 1);
+      return true;
+    })
+    .slice(0, CONTRIBUTION_LIMIT);
+}
+
 interface UseGitHubContributionsResult {
   contributions: GitHubContribution[];
   loading: boolean;
@@ -172,7 +199,7 @@ export function useGitHubContributions(
       try {
         const query = encodeURIComponent(`type:pr author:${username}`);
         const res = await fetch(
-          `https://api.github.com/search/issues?q=${query}&sort=updated&order=desc&per_page=6`,
+          `https://api.github.com/search/issues?q=${query}&sort=updated&order=desc&per_page=100`,
           { headers: { Accept: "application/vnd.github+json" } },
         );
         if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
@@ -180,8 +207,8 @@ export function useGitHubContributions(
         const data = await res.json();
         if (cancelled) return;
 
-        setContributions(
-          (data.items ?? []).map((item: any): GitHubContribution => {
+        const fetchedContributions = (data.items ?? []).map(
+          (item: any): GitHubContribution => {
             const [, owner, repo] =
               item.repository_url.match(/repos\/([^/]+)\/([^/]+)$/) ?? [];
 
@@ -189,11 +216,13 @@ export function useGitHubContributions(
               title: item.title,
               url: item.html_url,
               repository: owner && repo ? `${owner}/${repo}` : "unknown repo",
-              state: item.state,
+              state: item.pull_request?.merged_at ? "merged" : item.state,
               updatedAt: item.updated_at,
             };
-          }),
+          },
         );
+
+        setContributions(selectContributions(fetchedContributions, username));
       } catch (err: any) {
         if (!cancelled) setError(err.message ?? "Failed to load PRs");
       } finally {
