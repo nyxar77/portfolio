@@ -1,6 +1,6 @@
 #set page(
   paper: "a4",
-  margin: (x: 1cm, y: 0.7cm)
+  margin: (x: 1cm, y: 0.5cm)
 )
 
 #set text(
@@ -158,18 +158,14 @@
 #section("Professional Experience")
 
 #entry(
-  "Software Engineering Intern -- EMSI",
-  "07/2026 -- 09/2026",
+  "Software Engineering Intern -- Nibiru Consulting",
+  "08/2026 -- 09/2026",
   "Rabat, Morocco",
   [
-    - Designed and delivered Eden, Pulse, and Elene across Go, TypeScript, Svelte, Capacitor, Nix, automated testing, and CI.
+    - Designed and built #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden] #text(size: 8pt)[↗]] from scratch in Go: a YAML-configured engine that validates pipeline graphs and streams JSON events through in-memory channels.
+    - Implemented conditional routing, field transformations, explicit branches, bounded workers, backpressure, and coordinated shutdown on errors or signals.
+    - Added Prometheus metrics and health endpoints, native Go modules, reproducible Nix and CI checks, race-enabled tests, and end-to-end benchmarks reaching 53k messages/s for a one-transformation workload.
   ]
-)
-#entry(
-  "Frontend Developer -- CMH",
-  "03/2025 -- 07/2025",
-  "Tangier, Morocco",
-  []
 )
 #entry(
   "Full-Stack Developer Intern -- ONEE",
@@ -186,15 +182,15 @@
 #section("Technical Skills")
 
 #grid(
-  columns: (1fr, 1fr),
+  columns: (1.1fr, 0.9fr),
   gutter: 8pt,
   [
-    *Languages:* Go, TypeScript / JavaScript, Bash, Lua, C++ \
+    *Languages:* Go, TypeScript/JavaScript, Bash, Lua, #box[C++] \
     *Backend:* Bun, Laravel, Django, MySQL, REST APIs
   ],
   [
-    *Frontend:* Svelte, React, Capacitor, HTML / CSS \
-    *Tools:* Nix / NixOS, Git, Docker, ADB, Neovim
+    *Frontend:* Svelte, React, Capacitor, HTML/CSS \
+    *Tools:* Nix/NixOS, Git, Docker, ADB, Neovim
   ]
 )
 #v(2pt)
@@ -203,17 +199,6 @@
 // ── Projects ───────────────────────────────────────────────────────────────
 
 #section("Major Projects")
-
-#entry(
-  [
-    #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden -- Real-Time JSON Pipeline Engine] #text(size: 8pt)[↗]]
-  ],
-  "Go | YAML | Prometheus | Nix",
-  "Data Pipeline Engine",
-  [
-    - Built a YAML-configured Go engine for validated real-time JSON pipelines with transformations, branching, bounded workers, Prometheus metrics, native modules, benchmarks, and Nix-backed CI.
-  ]
-)
 
 #entry(
   [
@@ -234,6 +219,17 @@
   "Android Developer Tooling",
   [
     - Built an ADB CLI prototype for safe device detection and inspection, backed by Nix checks for formatting, static analysis, race-enabled tests, vulnerability audits, and CI.
+  ]
+)
+
+#entry(
+  [
+    #link("https://github.com/nyxar77/projectorctl")[#underline[projectorctl -- Safe Hyprland Display Switcher] #text(size: 8pt)[↗]]
+  ],
+  "Shell | Nix | Hyprland | Quickshell",
+  "Linux Desktop Tooling",
+  [
+    - Built a CLI, Quickshell panel, and Home Manager module for private, mirrored, and extended display layouts, with automatic audio switching and fail-closed recovery when a display disappears or verification fails.
   ]
 )
 

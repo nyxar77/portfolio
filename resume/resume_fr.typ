@@ -1,6 +1,6 @@
 #set page(
   paper: "a4",
-  margin: (x: 1cm, y: 0.7cm)
+  margin: (x: 1cm, y: 0.5cm)
 )
 
 #set text(
@@ -158,18 +158,14 @@
 #section("Expérience Professionnelle")
 
 #entry(
-  "Stagiaire en ingénierie logicielle -- EMSI",
-  "07/2026 -- 09/2026",
+  "Stagiaire en ingénierie logicielle -- Nibiru Consulting",
+  "08/2026 -- 09/2026",
   "Rabat, Maroc",
   [
-    - Conception d'Eden, Pulse et Elene en Go, TypeScript / Svelte, Capacitor et Nix, avec tests automatisés et CI.
+    - Conception et développement de #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden] #text(size: 8pt)[↗]] en Go : un moteur configurable en YAML qui valide les graphes de traitement et transmet les événements JSON via des canaux en mémoire.
+    - Implémentation du routage conditionnel, des transformations de champs, des branches explicites, des workers limités, de la contre-pression et de l'arrêt coordonné en cas d'erreur ou de signal.
+    - Ajout de métriques et endpoints de santé Prometheus, de modules Go natifs, de contrôles Nix et CI reproductibles, de tests avec détecteur de concurrence et de benchmarks atteignant 53k messages/s sur un pipeline à une transformation.
   ]
-)
-#entry(
-  "Développeur Frontend -- CMH",
-  "03/2025 -- 07/2025",
-  "Tanger, Maroc",
-  []
 )
 #entry(
   "Stagiaire Développeur Full-Stack -- ONEE",
@@ -186,15 +182,15 @@
 #section("Compétences Techniques")
 
 #grid(
-  columns: (1fr, 1fr),
+  columns: (1.1fr, 0.9fr),
   gutter: 8pt,
   [
-    *Langages :* Go, TypeScript / JavaScript, Bash, Lua, C++ \
+    *Langages :* Go, TypeScript/JavaScript, Bash, Lua, #box[C++] \
     *Backend :* Bun, Laravel, Django, MySQL, API REST
   ],
   [
-    *Frontend :* Svelte, React, Capacitor, HTML / CSS \
-    *Outils :* Nix / NixOS, Git, Docker, ADB, Neovim
+    *Frontend :* Svelte, React, Capacitor, HTML/CSS \
+    *Outils :* Nix/NixOS, Git, Docker, ADB, Neovim
   ]
 )
 #v(2pt)
@@ -203,17 +199,6 @@
 // ── Projets ────────────────────────────────────────────────────────────────
 
 #section("Projets Majeurs")
-
-#entry(
-  [
-    #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden -- Moteur de Pipelines JSON en Temps Réel] #text(size: 8pt)[↗]]
-  ],
-  "Go | YAML | Prometheus | Nix",
-  "Moteur de Traitement de Données",
-  [
-    - Développement d'un moteur Go configurable en YAML pour des pipelines JSON validés avec transformations, branches, workers limités, métriques Prometheus, modules natifs, benchmarks et CI sous Nix.
-  ]
-)
 
 #entry(
   [
@@ -234,6 +219,17 @@
   "Outil de Développement Android",
   [
     - Développement d'un prototype CLI ADB pour détecter et inspecter les appareils de façon sûre, avec contrôles Nix de formatage, analyse statique, tests de concurrence, audit de vulnérabilités et CI.
+  ]
+)
+
+#entry(
+  [
+    #link("https://github.com/nyxar77/projectorctl")[#underline[projectorctl -- Gestionnaire d'Affichage Hyprland] #text(size: 8pt)[↗]]
+  ],
+  "Shell | Nix | Hyprland | Quickshell",
+  "Outil Linux pour le Bureau",
+  [
+    - Création d'un CLI, d'un panneau Quickshell et d'un module Home Manager pour les modes privé, miroir et étendu, avec bascule audio automatique et retour sécurisé si un écran disparaît ou si la vérification échoue.
   ]
 )
 
