@@ -1,13 +1,15 @@
 #set page(
   paper: "a4",
-  margin: (x: 1cm, y: 0.5cm)
+  margin: (x: 1cm, y: 0.35cm)
 )
 
 #set text(
   font: "New Computer Modern",
-  size: 10.5pt,
+  size: 10pt,
   lang: "en"
 )
+#set par(leading: 0.5em)
+#let accent = rgb("#204D5A")
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 
@@ -92,9 +94,9 @@
 // ── Header ─────────────────────────────────────────────────────────────────
 
 #align(center)[
-  #text(size: 19pt, weight: "bold")[#upper("Abderrahmane Drissi")] \
+  #text(size: 19pt, weight: "bold", fill: accent)[#upper("Abderrahmane Drissi")] \
   #v(1pt)
-  #text(size: 11pt, weight: "semibold", fill: luma(30%))[Engineering Student] \
+  #text(size: 11pt, weight: "semibold", fill: luma(30%))[Full-Stack Development | Linux Tooling] \
   #v(3pt)
   #text(size: 9.5pt)[
     #location-icon Salé, Morocco
@@ -102,24 +104,25 @@
     #phone-icon #link("tel:+212635009061")[#underline[+212 635009061]]
     #h(8pt) | #h(8pt)
     #gmail-icon #link("mailto:abderrahmane.drissi@nyxar77.xyz")[#underline[abderrahmane.drissi\@nyxar77.xyz]]
-    #h(8pt) | #h(8pt)
-    #github-icon #link("https://github.com/nyxar77")[#underline[nyxar77]]
-    #h(8pt) | #h(8pt)
-    #linkedin-icon #link("https://www.linkedin.com/in/abderrahmane-drissi-662607254")[#underline[Abderrahmane Drissi]]
-    #h(8pt) | #h(8pt)
-    #portfolio-icon #link("https://portfolio.nyxar.space")[#underline[portfolio.nyxar.space]]
+  ] \
+  #text(size: 8pt)[
+    #github-icon #link("https://github.com/nyxar77")[#underline[https://github.com/nyxar77]]
+    #h(5pt) | #h(5pt)
+    #linkedin-icon #link("https://www.linkedin.com/in/abderrahmane-drissi-662607254")[#underline[https://www.linkedin.com/in/abderrahmane-drissi-662607254]]
+    #h(5pt) | #h(5pt)
+    #portfolio-icon #link("https://portfolio.nyxar77.xyz")[#underline[https://portfolio.nyxar77.xyz]]
   ]
   #v(3pt)
-  #line(length: 100%, stroke: 1pt)
+  #line(length: 100%, stroke: (paint: accent, thickness: 1pt))
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 #let section(title) = {
-  v(3pt)
+  v(-1pt)
   text(size: 11.5pt, weight: "bold")[#upper(title)]
   v(-7pt)
-  line(length: 100%, stroke: 0.5pt)
+  line(length: 100%, stroke: (paint: accent, thickness: 0.5pt))
   v(2pt)
 }
 
@@ -130,11 +133,17 @@
   )
   if sub != "" {
     text(style: "italic", size: 9.5pt)[#sub]
+    v(-4pt)
   }
-  v(-3pt)
-  text(size: 10pt)[#body]
+  text(size: 9.5pt)[#body]
   v(0pt)
 }
+
+// ── Profile ────────────────────────────────────────────────────────────────
+
+#section("Profile")
+
+#text(size: 10pt)[Engineering student building full-stack applications and Linux tools. I work across Go backends, React/Svelte interfaces, and declarative Nix configurations, with a focus on reliable automation and testing.]
 
 // ── Education ──────────────────────────────────────────────────────────────
 
@@ -142,14 +151,14 @@
 
 #entry(
   "Moroccan School of Engineering Sciences (EMSI)",
-  "10/2025 -- Present",
-  "Engineering Programme -- Rabat",
+  "10/2025 – Present",
+  "Computer Science and Network Engineering – Rabat",
   []
 )
 #entry(
-  "OFPPT - Digital Development",
-  "09/2022 -- 07/2024",
-  "Specialization: FullStack",
+  "OFPPT",
+  "09/2022 – 07/2024",
+  "Specialized Technician in Digital Development, Web Full Stack",
   []
 )
 
@@ -158,22 +167,22 @@
 #section("Professional Experience")
 
 #entry(
-  "Software Engineering Intern -- Nibiru Consulting",
-  "08/2026 -- 09/2026",
+  "Software Engineering Intern – Nibiru Consulting",
+  "08/2026 – 09/2026",
   "Rabat, Morocco",
   [
-    - Designed and built #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden] #text(size: 8pt)[↗]] from scratch in Go: a YAML-configured engine that validates pipeline graphs and streams JSON events through in-memory channels.
-    - Implemented conditional routing, field transformations, explicit branches, bounded workers, backpressure, and coordinated shutdown on errors or signals.
-    - Added Prometheus metrics and health endpoints, native Go modules, reproducible Nix and CI checks, race-enabled tests, and end-to-end benchmarks reaching 53k messages/s for a one-transformation workload.
+    - Owned the design and Go implementation of #link("https://github.com/Nibiru-Consulting/Eden")[#underline[Eden] #text(size: 8pt)[↗]], a YAML-configured JSON pipeline engine; a local end-to-end benchmark reached 53,867 messages/s with one transformation.
+    - Built graph validation, conditional routing, transformations, and bounded workers with backpressure and graceful shutdown; 34 named tests pass with the race detector.
+    - Exposed 2 custom Prometheus metrics and liveness/readiness endpoints; set up a Nix CI gate for formatting, tests, go vet, build, and workflow lint.
   ]
 )
 #entry(
-  "Full-Stack Developer Intern -- ONEE",
-  "03/2024 -- 04/2024",
+  "Full-Stack Developer Intern – ONEE",
+  "03/2024 – 04/2024",
   "Fès, Morocco",
   [
-    - Developed #link("https://github.com/nyxar77/ParcAuto")[#underline[ParcAuto] #text(size: 8pt)[↗]], a vehicle fleet management system with Laravel, React, Inertia.js, and MySQL.
-    - Implemented CRUD workflows, data import/export, operation history, and a reactive supervision interface.
+    - Built #link("https://github.com/nyxar77/ParcAuto")[#underline[ParcAuto] #text(size: 8pt)[↗]], a Laravel, React, Inertia.js, and MySQL fleet management app for tracking vehicles and operations.
+    - Delivered vehicle workflows, data import/export, operation history, and a supervision interface.
   ]
 )
 
@@ -186,15 +195,15 @@
   gutter: 8pt,
   [
     *Languages:* Go, TypeScript/JavaScript, Bash, Lua, #box[C++] \
-    *Backend:* Bun, Laravel, Django, MySQL, REST APIs
+    *Backend:* Laravel, Django, SQL, MySQL, REST APIs
   ],
   [
     *Frontend:* Svelte, React, Capacitor, HTML/CSS \
-    *Tools:* Nix/NixOS, Git, Docker, ADB, Neovim
+    *DevOps/Observability:* NixOS, Home Manager, Git/GitHub Actions, Prometheus, Docker, Podman
   ]
 )
 #v(2pt)
-#text(size: 10pt)[*Concepts:* Event Pipelines, Local-First Apps, Automation, Testing, CI/CD]
+#text(size: 10pt)[*Practices:* Linux/Bash, unit and integration testing, automation, event pipelines]
 
 // ── Projects ───────────────────────────────────────────────────────────────
 
@@ -202,34 +211,34 @@
 
 #entry(
   [
-    #link("https://github.com/nyxar77/Pulse")[#underline[Pulse -- Offline Workout Planner] #text(size: 8pt)[↗]]
+    #link("https://github.com/nyxar77/Pulse")[#underline[Pulse – Offline Workout Planner] #text(size: 8pt)[↗]]
   ],
-  "Svelte | TypeScript | Capacitor | Android",
-  "Local-First Mobile and Web App",
+  "",
+  "Stack: Svelte, TypeScript, Capacitor, Android",
   [
-    - Built and released an offline-first workout planner with 72 exercises, muscle maps, per-set tracking, JSON backups, installable Android and web builds, and no accounts or analytics.
+    - Solo project: built and released an offline-first workout planner with 72 exercises, muscle maps, per-set tracking, JSON backups, installable Android and web builds, and no accounts or analytics.
   ]
 )
 
 #entry(
   [
-    #link("https://github.com/nyxar77/Elene")[#underline[Elene -- Local Android Utility] #text(size: 8pt)[↗]]
+    #link("https://github.com/nyxar77/homeconfig")[#underline[homeconfig – Declarative Linux Setup] #text(size: 8pt)[↗]]
   ],
-  "Go | ADB | Nix",
-  "Android Developer Tooling",
+  "",
+  "Stack: Nix, Home Manager, Linux",
   [
-    - Built an ADB CLI prototype for safe device detection and inspection, backed by Nix checks for formatting, static analysis, race-enabled tests, vulnerability audits, and CI.
+    - Maintain 58 Home Manager module files for SSH, Podman, developer tools, and desktop setup in a flake with 2 home configurations.
   ]
 )
 
 #entry(
   [
-    #link("https://github.com/nyxar77/projectorctl")[#underline[projectorctl -- Safe Hyprland Display Switcher] #text(size: 8pt)[↗]]
+    #link("https://github.com/nyxar77/projectorctl")[#underline[projectorctl – Safe Hyprland Display Switcher] #text(size: 8pt)[↗]]
   ],
-  "Shell | Nix | Hyprland | Quickshell",
-  "Linux Desktop Tooling",
+  "",
+  "Stack: Shell, Nix, Hyprland, Quickshell",
   [
-    - Built a CLI, Quickshell panel, and Home Manager module for private, mirrored, and extended display layouts, with automatic audio switching and fail-closed recovery when a display disappears or verification fails.
+    - Solo project: built a CLI, Quickshell panel, and Home Manager module for 3 display modes (private, mirrored, extended), with automatic audio switching and fail-closed recovery when a display disappears or verification fails.
   ]
 )
 
@@ -237,4 +246,4 @@
 
 #section("Languages")
 
-#text(size: 10.5pt)[*English:* Professional #h(16pt) *Arabic:* Native #h(16pt) *French:* Fluent]
+#text(size: 10.5pt)[*English:* Professional #h(16pt) *Arabic:* Native #h(16pt) *French:* Intermediate]
