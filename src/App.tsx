@@ -1,5 +1,7 @@
 import "./index.css";
 import { useState } from "react";
+import { useLanguage, translate, timeAgo, type Language } from "./hooks/useLanguage";
+import { LanguageSelector } from "./components/LanguageSelector";
 import logo from "./assets/logo.svg";
 import { meta, repoSpotlights, skills } from "./data/portfolio";
 import { useGitHub, useGitHubContributions } from "./hooks/useGitHub";
@@ -10,21 +12,8 @@ const principles = [
   "Browser extensions and automation that remove repetitive work from everyday workflows.",
 ];
 
-function timeAgo(date: string) {
-  const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return "recently";
-
-  const diff = Date.now() - parsed.getTime();
-  const days = Math.floor(diff / 86400000);
-
-  if (days < 1) return "today";
-  if (days < 7) return `${days}d ago`;
-  if (days < 30) return `${Math.floor(days / 7)}w ago`;
-  if (days < 365) return `${Math.floor(days / 30)}mo ago`;
-  return `${Math.floor(days / 365)}y ago`;
-}
-
-function WorkSection() {
+function WorkSection({ language }: { language: Language }) {
+  const t = (text: string) => translate(text, language);
   const { all, loading, error } = useGitHub("nyxar77");
   const {
     contributions,
@@ -43,8 +32,8 @@ function WorkSection() {
   return (
     <section id="work" className="section" aria-labelledby="work-title">
       <div className="section-heading">
-        <p className="eyebrow">Selected work</p>
-        <h2 id="work-title">Apps, configs, and open source.</h2>
+        <p className="eyebrow">{t("Selected work")}</p>
+        <h2 id="work-title">{t("Apps, configs, and open source.")}</h2>
       </div>
 
       <div className="work-layout">
@@ -59,10 +48,9 @@ function WorkSection() {
 
           {!loading &&
             orderedRepos.map(({ spotlight, repo }, index) => {
-              const language = repo?.language ?? "Repository";
+              const repoLanguage = repo?.language ?? t("Repository");
               const languageColor = repo?.languageColor ?? "#9399b2";
-              const description =
-                repo?.description ?? spotlight.fallbackDescription;
+              const description = t(spotlight.fallbackDescription);
               const url =
                 repo?.url ?? `https://github.com/nyxar77/${spotlight.repo}`;
               const topics = repo?.topics.slice(0, 4) ?? [];
@@ -74,8 +62,8 @@ function WorkSection() {
                   </div>
                   <div className="repo-main">
                     <div className="repo-kicker">
-                      <span>{spotlight.label}</span>
-                      <span>{spotlight.note}</span>
+                      <span>{t(spotlight.label)}</span>
+                      <span>{t(spotlight.note)}</span>
                     </div>
                     <div className="repo-title-row">
                       <h3>
@@ -88,7 +76,7 @@ function WorkSection() {
                     <div className="repo-tags">
                       <span>
                         <i style={{ backgroundColor: languageColor }} />
-                        {language}
+                        {repoLanguage}
                       </span>
                       {topics.map((topic) => (
                         <span key={topic}>#{topic}</span>
@@ -97,16 +85,16 @@ function WorkSection() {
                   </div>
                   <dl className="repo-meta">
                     <div>
-                      <dt>Stars</dt>
+                      <dt>{t("Stars")}</dt>
                       <dd>{repo?.stargazerCount ?? "-"}</dd>
                     </div>
                     <div>
-                      <dt>Forks</dt>
+                      <dt>{t("Forks")}</dt>
                       <dd>{repo?.forkCount ?? "-"}</dd>
                     </div>
                     <div>
-                      <dt>Updated</dt>
-                      <dd>{repo ? timeAgo(repo.updatedAt) : "-"}</dd>
+                      <dt>{t("Updated")}</dt>
+                      <dd>{repo ? timeAgo(repo.updatedAt, language) : "-"}</dd>
                     </div>
                   </dl>
                 </article>
@@ -115,15 +103,15 @@ function WorkSection() {
 
           {!loading && error && (
             <p className="api-note">
-              GitHub data did not load. Showing local fallback text. {error}
+              {t("GitHub data did not load. Showing local fallback text.")}
             </p>
           )}
         </div>
 
         <aside className="oss-panel" aria-labelledby="oss-title">
           <p className="eyebrow">Open source</p>
-          <h3 id="oss-title">Recent PR activity</h3>
-          <p>Recent contributions across different open-source projects.</p>
+          <h3 id="oss-title">{t("Recent PR activity")}</h3>
+          <p>{t("Recent contributions across different open-source projects.")}</p>
 
           {contributionsLoading && (
             <div className="oss-list">
@@ -145,7 +133,7 @@ function WorkSection() {
                   <span>{item.repository}</span>
                   <strong>{item.title}</strong>
                   <small>
-                    {item.state} / {timeAgo(item.updatedAt)}
+                    {t(item.state)} / {timeAgo(item.updatedAt, language)}
                   </small>
                 </a>
               ))}
@@ -153,7 +141,7 @@ function WorkSection() {
           )}
 
           {!contributionsLoading && contributionsError && (
-            <p className="api-note">{contributionsError}</p>
+            <p className="api-note">{t("Unable to load recent contributions.")}</p>
           )}
 
           <a
@@ -162,7 +150,7 @@ function WorkSection() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            View authored PRs
+            {t("View authored PRs")}
           </a>
         </aside>
       </div>
@@ -171,6 +159,8 @@ function WorkSection() {
 }
 
 export default function App() {
+  const { language, preference, setPreference } = useLanguage();
+  const t = (text: string) => translate(text, language);
   const [resumeOpen, setResumeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -186,27 +176,28 @@ export default function App() {
 
   return (
     <main className="site-shell">
-      <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href="#top" aria-label={`${meta.name} home`}>
+      <LanguageSelector language={language} preference={preference} onChange={setPreference} />
+      <nav className="topbar" aria-label={t("Primary navigation")}>
+        <a className="brand" href="#top" aria-label={`${meta.name} ${t("home")}`}>
           <img src={logo} alt="" />
           <span>{meta.name}</span>
         </a>
         <div className="nav-links">
           <span aria-hidden="true">~/portfolio</span>
-          <a href="#work">Work</a>
-          <a href="#skills">Skills</a>
+          <a href="#work">{t("Work")}</a>
+          <a href="#skills">{t("Skills")}</a>
         </div>
       </nav>
 
       <section id="top" className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">{meta.location} / Software Developer</p>
+          <p className="eyebrow">{t(meta.location)} / {t("Software Developer")}</p>
           <h1>{meta.name}</h1>
-          <p className="lead">{meta.tagline}</p>
-          <p className="bio">{meta.bio}</p>
+          <p className="lead">{t(meta.tagline)}</p>
+          <p className="bio">{t(meta.bio)}</p>
           <div className="hero-actions">
             <a className="button primary" href="#work">
-              View work
+              {t("View work")}
             </a>
             <div className="resume-menu">
               <button
@@ -217,7 +208,7 @@ export default function App() {
                 onClick={() => setResumeOpen((open) => !open)}
               >
                 <span aria-hidden="true">↓</span>
-                Download resume
+                {t("Download resume")}
               </button>
               {resumeOpen && (
                 <div className="resume-dropdown" role="menu">
@@ -227,7 +218,7 @@ export default function App() {
                     role="menuitem"
                     onClick={() => setResumeOpen(false)}
                   >
-                    English
+                    {t("English")}
                   </a>
                   <a
                     href="/resume/Abderrahmane_Drissi_CV_FR.pdf"
@@ -235,7 +226,7 @@ export default function App() {
                     role="menuitem"
                     onClick={() => setResumeOpen(false)}
                   >
-                    French
+                    {t("French")}
                   </a>
                 </div>
               )}
@@ -251,17 +242,17 @@ export default function App() {
           </div>
         </div>
 
-        <aside className="signal-panel" aria-label="Profile summary">
+        <aside className="signal-panel" aria-label={t("Profile summary")}>
           <div className="profile-row">
             <img src={meta.avatar} alt={meta.name} />
             <div>
               <p>{meta.name}</p>
-              <span>{meta.title}</span>
+              <span>{t(meta.title)}</span>
             </div>
           </div>
           <dl className="stats">
             <div>
-              <dt>Email</dt>
+              <dt>{t("Email")}</dt>
               <dd>
                 <button className="stat-copy" type="button" onClick={copyEmail}>
                   {meta.email}
@@ -269,16 +260,16 @@ export default function App() {
               </dd>
             </div>
             <div>
-              <dt>Focus</dt>
-              <dd>Web apps</dd>
+              <dt>{t("Focus")}</dt>
+              <dd>{t("Web apps")}</dd>
             </div>
             <div>
-              <dt>Areas</dt>
+              <dt>{t("Areas")}</dt>
               <dd>Web, Android, Linux</dd>
             </div>
             <div>
-              <dt>Study</dt>
-              <dd>Engineering student at EMSI Rabat</dd>
+              <dt>{t("Study")}</dt>
+              <dd>{t("Engineering student at EMSI Rabat")}</dd>
             </div>
           </dl>
         </aside>
@@ -286,31 +277,31 @@ export default function App() {
 
       <section className="section intro-section" aria-labelledby="about-title">
         <div className="section-heading">
-          <p className="eyebrow">About</p>
-          <h2 id="about-title">Projects and tools.</h2>
+          <p className="eyebrow">{t("About")}</p>
+          <h2 id="about-title">{t("Projects and tools.")}</h2>
         </div>
         <div className="intro-grid">
           {principles.map((item) => (
-            <p key={item}>{item}</p>
+            <p key={item}>{t(item)}</p>
           ))}
         </div>
       </section>
 
-      <WorkSection />
+      <WorkSection language={language} />
 
       <section id="skills" className="section" aria-labelledby="skills-title">
         <div className="section-heading">
-          <p className="eyebrow">Capabilities</p>
-          <h2 id="skills-title">Stack.</h2>
+          <p className="eyebrow">{t("Capabilities")}</p>
+          <h2 id="skills-title">{t("Stack.")}</h2>
         </div>
 
         <div className="skills-grid">
           {skills.map((group) => (
             <article className="skill-card" key={group.category}>
-              <h3>{group.category}</h3>
+              <h3>{t(group.category)}</h3>
               <div>
                 {group.items.map((item) => (
-                  <span key={item}>{item}</span>
+                  <span key={item}>{t(item)}</span>
                 ))}
               </div>
             </article>
@@ -319,10 +310,10 @@ export default function App() {
       </section>
 
       <footer className="site-footer">
-        <p>That’s all. Thanks for looking :)</p>
+        <p>{t("That’s all. Thanks for looking :)")}</p>
       </footer>
       <div className={`toast${copied ? " is-visible" : ""}`} role="status">
-        copied to <span className="clipboard-icon" aria-label="clipboard" />
+        {t("copied to")} <span className="clipboard-icon" aria-label={t("clipboard")} />
       </div>
     </main>
   );

@@ -1177,3 +1177,85 @@ h1 {
     max-width: 100%;
   }
 }
+
+.language-selector {
+  position: fixed;
+  top: 28px;
+  right: 20px;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--red-line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--red);
+}
+
+.language-selector svg {
+  flex-shrink: 0;
+}
+
+.language-selector select {
+  min-width: 0;
+  max-width: 145px;
+  min-height: 42px;
+  border: 0;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.language-selector:focus-within {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* Reserve a separate top row when the viewport has no room beside the nav. */
+@media (max-width: 1620px) {
+  .language-selector {
+    top: 12px;
+    right: max(20px, calc((100vw - 1180px) / 2));
+  }
+
+  .topbar {
+    top: 64px;
+  }
+
+  .hero {
+    padding-top: 180px;
+  }
+
+  .section {
+    scroll-margin-top: 190px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding-top: 218px;
+  }
+
+  .section {
+    scroll-margin-top: 218px;
+  }
+}
+
+@media (max-width: 640px) {
+  .language-selector {
+    right: 10px;
+    top: 8px;
+  }
+
+  .topbar {
+    top: 58px;
+  }
+
+  .hero {
+    padding-top: 204px;
+  }
+}
